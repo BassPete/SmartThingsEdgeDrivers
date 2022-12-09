@@ -1,6 +1,6 @@
 local preferences = {
-  motionSensorSensitivity = {parameter_number = 4, size = 1},
-  motionClearTime = {parameter_number = 3, size = 2}
+  temperatureAutoReport = {parameter_number = 1, size = 4},
+  Openwindowdetect = {parameter_number = 6, size = 1}
 }
 
 return preferences
