@@ -1,4 +1,4 @@
-name: base-radiator-thermostat
+name: everspring-radiator-thermostat
 components:
 - id: main
   capabilities:
