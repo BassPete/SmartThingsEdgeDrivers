@@ -1,0 +1,22 @@
+name: everspring-radiator-thermostat
+components:
+- id: main
+  capabilities:
+  - id: temperatureMeasurement
+    version: 1
+  - id: THERMOSTAT_SETPOINT_V3
+    version: 1
+    config:
+      values:
+        - key: "THERMOSTAT_SETPOINT_V3.value"
+          range: [ 5, 35 ]
+  - id: thermostatMode
+    version: 1
+  - id: battery
+    version: 1
+  - id: refresh
+    version: 1
+  - id: clock
+    version: 1
+  categories:
+  - name: Thermostat
