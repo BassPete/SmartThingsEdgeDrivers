@@ -1,4 +1,0 @@
-name: 'Z-Wave Everspring Thermostat'
-packageKey: 'zwave-everspring-thermostat'
-permissions:
-  zwave: {}

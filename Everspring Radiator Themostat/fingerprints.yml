@@ -1,7 +1,0 @@
-zwaveManufacturer:
-  - id: "everspring"
-    deviceLabel: Everspring Thermostat
-    manufacturerId: 0x0060
-    productId: 0x0001
-    productType: 0x0015
-    deviceProfileName: everspring-radiator-thermostat
