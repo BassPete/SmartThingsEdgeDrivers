@@ -12,6 +12,7 @@ components:
       values:
         - key: "heatingSetpoint.value"
           range: [ 5, 35 ]
+          size: 2
   - id: thermostatMode
     version: 1
   categories:
