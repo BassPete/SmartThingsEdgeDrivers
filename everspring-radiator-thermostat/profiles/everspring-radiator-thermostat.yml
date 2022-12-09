@@ -7,13 +7,12 @@ components:
   - id: battery
     version: 1
   - id: thermostatHeatingSetpoint
-    version: 1
+    version: 3
     config:
       values:
         - key: "heatingSetpoint.value"
-          range: [ 5, 35 ]
-          size: 2
+          range: [ 5, 35 ]          
   - id: thermostatMode
-    version: 1
+    version: 3
   categories:
   - name: Thermostat
