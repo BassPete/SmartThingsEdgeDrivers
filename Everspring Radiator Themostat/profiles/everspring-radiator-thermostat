@@ -4,17 +4,19 @@ components:
   capabilities:
   - id: temperatureMeasurement
     version: 1
-  - id: thermostatHeatingSetpoint
+  - id: THERMOSTAT_SETPOINT_V3
     version: 1
     config:
       values:
-        - key: "heatingSetpoint.value"
-          range: [ 4, 28 ]
+        - key: "THERMOSTAT_SETPOINT_V3.value"
+          range: [ 5, 35 ]
   - id: thermostatMode
     version: 1
   - id: battery
     version: 1
   - id: refresh
+    version: 1
+  - id: clock
     version: 1
   categories:
   - name: Thermostat
