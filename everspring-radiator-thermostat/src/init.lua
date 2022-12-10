@@ -120,7 +120,7 @@ local driver_template = {
       [capabilities.refresh.commands.refresh.NAME] = do_refresh
     },
     [capabilities.thermostatEnergySetpoint.ID] = {
-      [capabilities.thermostatEnergySetpoint.commands.setCoolingSetpoint.NAME] = set_setpoint_factory(ThermostatSetpoint.setpoint_type.ENERGY_1)
+      [capabilities.thermostatEnergySetpoint.commands.EnergySetpoint.NAME] = set_setpoint_factory(ThermostatSetpoint.setpoint_type.ENERGY_1)
     },
     [capabilities.thermostatHeatingSetpoint.ID] = {
       [capabilities.thermostatHeatingSetpoint.commands.setHeatingSetpoint.NAME] = set_setpoint_factory(ThermostatSetpoint.setpoint_type.HEATING_1)
