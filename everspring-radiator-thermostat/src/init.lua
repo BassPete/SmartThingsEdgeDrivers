@@ -26,7 +26,7 @@ local ThermostatMode = (require "st.zwave.CommandClass.ThermostatMode")({version
 --- @type st.zwave.CommandClass.ThermostatSetpoint
 local ThermostatSetpoint = (require "st.zwave.CommandClass.ThermostatSetpoint")({version=3})
 --- @type st.zwave.CommandClass.Clock
-local Clock = (require "st.zwave.CommandClass.Clock")({version=1})
+local Clock = require "st.zwave.CommandClass.Clock"
 local constants = require "st.zwave.constants"
 local utils = require "st.utils"
 
