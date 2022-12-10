@@ -2,19 +2,19 @@ name: everspring-radiator-thermostat
 components:
 - id: main
   capabilities:
-  - id: thermostatMode
-    version: 1
   - id: temperatureMeasurement
-    version: 1
-  - id: battery
     version: 1
   - id: thermostatHeatingSetpoint
     version: 1
     config:
       values:
         - key: "heatingSetpoint.value"
+          range: [ 5, 35 ]
           size: 2
-          range: [ 5, 35 ]          
+  - id: thermostatMode
+    version: 1
+  - id: battery
+    version: 1
   - id: firmwareUpdate
     version: 1
   - id: refresh
