@@ -25,8 +25,14 @@ local SensorMultilevel = (require "st.zwave.CommandClass.SensorMultilevel")({ver
 local ThermostatMode = (require "st.zwave.CommandClass.ThermostatMode")({version=3})
 --- @type st.zwave.CommandClass.ThermostatSetpoint
 local ThermostatSetpoint = (require "st.zwave.CommandClass.ThermostatSetpoint")({version=3})
+--- @type st.zwave.CommandClass.Clock
+local Clock = (require "st.zwave.CommandClass.Clock")({version=1})
 local constants = require "st.zwave.constants"
 local utils = require "st.utils"
+
+local LATEST_BATTERY_REPORT_TIMESTAMP = "latest_battery_report_timestamp"
+local LATEST_CLOCK_SET_TIMESTAMP = "latest_clock_set_timestamp"
+local WEEK = {0, 1, 2, 3, 4, 5, 6}
 
 local do_refresh = function(self, device)
   device:send(ThermostatMode:SupportedGet({}))
@@ -35,6 +41,21 @@ local do_refresh = function(self, device)
   device:send(ThermostatSetpoint:Get({setpoint_type = ThermostatSetpoint.setpoint_type.ENERGY_1}))
   device:send(ThermostatSetpoint:Get({setpoint_type = ThermostatSetpoint.setpoint_type.HEATING_1}))
   device:send(Battery:Get({}))
+end
+
+local function seconds_since_latest_clock_set(device)
+    local last_clock_set_time = device:get_field(LATEST_CLOCK_SET_TIMESTAMP)
+    if last_clock_set_time ~= nil then
+        return os.difftime(os.time(), last_clock_set_time)
+    end
+    return CLOCK_SET_INTERVAL_SEC + 1
+end
+
+local function check_and_send_battery_get(device)
+    -- Check if time to request new battery report. one time a day
+    if seconds_since_latest_battery_report(device) > BATTERY_REPORT_INTERVAL_SEC then
+        device:send(Battery:Get({}))
+    end
 end
 
 local function set_setpoint_factory(setpoint_type)
@@ -55,6 +76,34 @@ local function set_setpoint_factory(setpoint_type)
 
     device.thread:call_with_delay(1, follow_up_poll)
   end
+end
+
+local function cmdClockSet()
+    local now = os.date("*t") -- UTC
+    log.info("ClockSet: ".. now.hour ..":" .. now.min ..":" .. WEEK[now.wday])  -- lua wday starts from Sunday(1).
+    return Clock:Set({hour=now.hour, minute=now.min, weekday=WEEK[now.wday]})
+end
+
+local function check_and_send_clock_set(device)
+    -- Update device clock time, one time a day
+    if seconds_since_latest_clock_set(device) > CLOCK_SET_INTERVAL_SEC then
+        device:send(cmdClockSet())
+        device:set_field(LATEST_CLOCK_SET_TIMESTAMP, os.time())
+    end
+end
+
+local function check_and_send_cached_setpoint(device)
+    local cached_setpoint_command = device:get_field(CACHED_SETPOINT)
+
+    if cached_setpoint_command ~= nil then
+        device:send(cached_setpoint_command)
+        local follow_up_poll = function()
+            device:send(
+                    ThermostatSetpoint:Get({setpoint_type = ThermostatSetpoint.setpoint_type.HEATING_1})
+            )
+        end
+        device.thread:call_with_delay(DELAY_TO_GET_UPDATED_VALUE, follow_up_poll)
+    end
 end
 
 local driver_template = {
