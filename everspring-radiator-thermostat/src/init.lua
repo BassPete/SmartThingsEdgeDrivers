@@ -32,7 +32,7 @@ local utils = require "st.utils"
 
 local LATEST_BATTERY_REPORT_TIMESTAMP = "latest_battery_report_timestamp"
 local LATEST_CLOCK_SET_TIMESTAMP = "latest_clock_set_timestamp"
-local WEEK = {0, 1, 2, 3, 4, 5, 6}
+local WEEK = {2, 3, 4, 5, 6, 1, 0}
 
 local do_refresh = function(self, device)
   device:send(ThermostatMode:SupportedGet({}))
