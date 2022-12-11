@@ -32,13 +32,12 @@ local utils = require "st.utils"
 
 local LATEST_BATTERY_REPORT_TIMESTAMP = "latest_battery_report_timestamp"
 local LATEST_CLOCK_SET_TIMESTAMP = "latest_clock_set_timestamp"
-local WEEK = {2, 3, 4, 5, 6, 1, 0}
+local WEEK = {1, 2, 3, 4, 5, 6, 0}
 
 local do_refresh = function(self, device)
   device:send(ThermostatMode:SupportedGet({}))
   device:send(ThermostatMode:Get({}))
   device:send(SensorMultilevel:Get({}))
-  device:send(ThermostatSetpoint:Get({setpoint_type = ThermostatSetpoint.setpoint_type.ENERGY_1}))
   device:send(ThermostatSetpoint:Get({setpoint_type = ThermostatSetpoint.setpoint_type.HEATING_1}))
   device:send(Battery:Get({}))
 end
@@ -80,7 +79,7 @@ end
 
 local function cmdClockSet()
     local now = os.date("*t") -- UTC
-    log.info("ClockSet: ".. now.hour ..":" .. now.min ..":" .. WEEK[now.wday])  -- lua wday starts from Sunday(1).
+    log.info("ClockSet: ".. now.hour ..":" .. now.min ..":" .. WEEK[now.wday])  -- lua wday starts from Sunday(0).
     return Clock:Set({hour=now.hour, minute=now.min, weekday=WEEK[now.wday]})
 end
 
@@ -88,7 +87,7 @@ local function check_and_send_clock_set(device)
     -- Update device clock time, one time a day
     if seconds_since_latest_clock_set(device) > CLOCK_SET_INTERVAL_SEC then
         device:send(cmdClockSet())
-        device:set_field(LATEST_CLOCK_SET_TIMESTAMP, os.setlocale())
+        device:set_field(LATEST_CLOCK_SET_TIMESTAMP, os.time())
     end
 end
 
@@ -110,7 +109,6 @@ local driver_template = {
   supported_capabilities = {
     capabilities.temperatureMeasurement,
     capabilities.thermostatHeatingSetpoint,
-    capabilities.thermostatEnergySetpoint,
     capabilities.thermostatMode,
     capabilities.battery,
     capabilities.powerMeter,
@@ -118,9 +116,6 @@ local driver_template = {
   capability_handlers = {
     [capabilities.refresh.ID] = {
       [capabilities.refresh.commands.refresh.NAME] = do_refresh
-    },
-    [capabilities.thermostatEnergySetpoint.ID] = {
-      [capabilities.thermostatEnergySetpoint.commands.EnergySetpoint.NAME] = set_setpoint_factory(ThermostatSetpoint.setpoint_type.ENERGY_1)
     },
     [capabilities.thermostatHeatingSetpoint.ID] = {
       [capabilities.thermostatHeatingSetpoint.commands.setHeatingSetpoint.NAME] = set_setpoint_factory(ThermostatSetpoint.setpoint_type.HEATING_1)
