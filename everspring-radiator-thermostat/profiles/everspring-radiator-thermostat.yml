@@ -12,6 +12,11 @@ components:
           range: [ 5, 35 ]
   - id: thermostatMode
     version: 1
+        - key: "thermostatMode.value"
+          enabledValues:
+            - Energy Heat
+            - Off
+            - Heat
   - id: battery
     version: 1
   - id: firmwareUpdate
