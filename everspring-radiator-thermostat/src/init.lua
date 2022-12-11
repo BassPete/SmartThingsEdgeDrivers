@@ -88,7 +88,7 @@ local function check_and_send_clock_set(device)
     -- Update device clock time, one time a day
     if seconds_since_latest_clock_set(device) > CLOCK_SET_INTERVAL_SEC then
         device:send(cmdClockSet())
-        device:set_field(LATEST_CLOCK_SET_TIMESTAMP, os.time())
+        device:set_field(LATEST_CLOCK_SET_TIMESTAMP, os.setlocale())
     end
 end
 
