@@ -8,7 +8,9 @@ components:
     version: 1
     config:
       values:
-        - key: "thermostatSetpoint.value"
+        - key: "thermostatCoolingSetpoint.value"
+          range: [ 5, 35 ]
+        - key: "thermostatHeatingSetpoint.value"
           range: [ 5, 35 ]
   - id: thermostatMode
     version: 1
