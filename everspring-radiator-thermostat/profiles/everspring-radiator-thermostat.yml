@@ -4,21 +4,14 @@ components:
   capabilities:
   - id: temperatureMeasurement
     version: 1
-  - id: thermostatSetpoint
+  - id: thermostatHeatingSetpoint
     version: 1
     config:
       values:
-        - key: "thermostatCoolingSetpoint.value"
-          range: [ 5, 35 ]
-        - key: "thermostatHeatingSetpoint.value"
+        - key: "heatingSetpoint.value"
           range: [ 5, 35 ]
   - id: thermostatMode
     version: 1
-        - key: "thermostatMode.value"
-          enabledValues:
-            - Energy Heat
-            - Off
-            - Heat
   - id: battery
     version: 1
   - id: firmwareUpdate
